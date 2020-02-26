@@ -1,8 +1,6 @@
 # Minimum CMake version
 cmake_minimum_required(VERSION 3.2.3 FATAL_ERROR)
 
-set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/install)
-
 # Project name
 project(ldmx-analysis LANGUAGES CXX)
 
@@ -22,9 +20,6 @@ endif()
 set(LDMXSW_INCLUDE_DIR "${LDMX_INSTALL_PREFIX}/include")
 include_directories(${LDMXSW_INCLUDE_DIR})
 file(GLOB LDMX_LIBS ${LDMX_INSTALL_PREFIX}/lib/*.so)
-#foreach( lib ${LDMX_LIBS} )
-#    add_library(${lib})
-#endforeach()
 message( STATUS "ldmx-sw found at ${LDMX_INSTALL_PREFIX}" )
 
 # Get root and add it as an include
@@ -33,6 +28,7 @@ include(${ROOT_USE_FILE})
 message( STATUS "ROOT found at: ${ROOT_DIR}" )
 
 ## Install configuration scripts - switching out cmake parameters
+#   NOT IMPLEMENTED
 #file(GLOB config_scripts ${CMAKE_CURRENT_SOURCE_DIR}/config/*)
 #foreach(config_script ${config_scripts})
 #    get_filename_component(config_script_output ${config_script} NAME)
@@ -45,3 +41,10 @@ include_directories(include)
 
 # Define the sources 
 add_subdirectory(src)
+
+### Install a Python init file with a global variable with full path to analysis library
+#   NOT IMPLEMENTED
+#file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/python/__init__.py "# full path to analysis library\nANALYSIS_LIB = \"${CMAKE_INSTALL_PREFIX}/lib/libAnalysis.so\"" )
+#install(FILES ${CMAKE_CURRENT_BINARY_DIR}/python/__init__.py DESTINATION lib/python/LDMX)
+
+message( STATUS "ldmx-analysis will be installed to: ${CMAKE_INSTALL_PREFIX}" )
