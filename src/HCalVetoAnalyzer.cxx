@@ -41,14 +41,14 @@ namespace ldmx {
         if (!event.exists("HcalVeto")) return;
 
         // Get the HCal veto result for this event
-        auto veto{static_cast<const HcalVetoResult*>(event.getCollection("HcalVeto")->At(0))};
+        auto veto{event.getObject<HcalVetoResult>("HcalVeto")};
 
         // Get the hit with the maximum number of PE's 
-        auto maxPEHit{static_cast<HcalHit*>(veto->getMaxPEHit())};
+        auto maxPEHit{veto.getMaxPEHit()};
         
         // Fill the HCal veto variables
-        ntuple_->setVar<float>("max_pe",      maxPEHit->getPE());  
-        ntuple_->setVar<float>("max_pe_time", maxPEHit->getTime());  
+        ntuple_->setVar<float>("max_pe",      maxPEHit.getPE());  
+        ntuple_->setVar<float>("max_pe_time", maxPEHit.getTime());  
 
     }
 

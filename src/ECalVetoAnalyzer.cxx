@@ -36,14 +36,13 @@ namespace ldmx {
    
         // Check for the ECal veto collection in the event.  If it doesn't 
         // exists, skip creating an ntuple.
-        if (!event.exists(ecalVetoCollectionName_)) return; 
+        if (not event.exists(ecalVetoCollectionName_)) return; 
         
         // Get the ECal veto result for this event
-        auto veto{static_cast<const EcalVetoResult*>(
-                event.getCollection(ecalVetoCollectionName_)->At(0))};
+        auto veto{event.getObject<EcalVetoResult>(ecalVetoCollectionName_)};
 
         // Set the BDT score
-        ntuple_->setVar<float>("bdt_pred", veto->getDisc());  
+        ntuple_->setVar<float>("bdt_pred", veto.getDisc());  
 
     }
 
