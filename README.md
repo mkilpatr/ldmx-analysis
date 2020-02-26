@@ -10,13 +10,12 @@ If you haven't built and installed `ldmx-sw` yet, please [do so](https://github.
 
 Here are the steps to configuring and building this stand-alone library:
 
-1. Source the environment setup script: `source <path-to-ldmx-sw-install>/bin/ldmx-env-setup.sh`
-2. Make and Enter a build directory: `mkdir build; cd build`
-3. Run the following cmake command. This command tells this build where ldmx-sw is using the environment variables defined by the setup script.
+1. Make and Enter a build directory: `mkdir build; cd build`
+2. Run the following cmake command. This command tells this build where ldmx-sw is using the environment variables defined by the setup script. You need to type in the path to your ldmx-sw installation.
 ```bash
-cmake -DCMAKE_INSTALL_PREFIX=../install/ -DLDMX_INSTALL_PREFIX=${LDMXSW_DIR} ../
+cmake -DCMAKE_INSTALL_PREFIX=../install/ -DLDMX_INSTALL_PREFIX=<path-to-ldmx-sw-install> ../
 ```
-4. Build and install: `make install`
+3. Build and install: `make install`
 
 ### Running Processors
 
