@@ -15,6 +15,7 @@ Here are the steps to configuring and building this stand-alone library:
 ```bash
 cmake -DCMAKE_INSTALL_PREFIX=../install/ -DLDMX_INSTALL_PREFIX=<path-to-ldmx-sw-install> ../
 ```
+This repository assumes that you require ROOT as well, so you may need to tell cmake where ROOT is using `-DROOT_DIR=<path-to-root-install>`.
 3. Build and install: `make install`
 
 ### Running Processors
