@@ -27,3 +27,15 @@ This can be achieved by adding the following line to your python configuration s
 p.libraries.append( "<path-to-this-repo-install>/lib/libAnalysis.so" )
 ```
 where `p` is a previously defined `Process` object. With this line, you can use any processors written and compiled here as if they are processors inside of `ldmx-sw`.
+
+Alternatively, if you add `<path-to-this-repo-install>/lib/python` to your PYTHONPATH environment variable, you will be able to use the predefined function `libAnaPath()` to return the full path to the analysis library.
+
+In your environment setup script or `.bashrc`:
+```bash
+export PYTHONPATH=<path-to-this-repo-install>/lib/python:$PYTHONPATH
+```
+And in your python configuration file:
+```python
+import LDMXANA.libAnaPath as LA
+p.libraries.append( LA.libAnaPath() )
+```
