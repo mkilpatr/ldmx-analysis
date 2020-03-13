@@ -42,9 +42,11 @@ include_directories(include)
 # Define the sources 
 add_subdirectory(src)
 
-### Install a Python init file with a global variable with full path to analysis library
-#   NOT IMPLEMENTED
-#file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/python/__init__.py "# full path to analysis library\nANALYSIS_LIB = \"${CMAKE_INSTALL_PREFIX}/lib/libAnalysis.so\"" )
-#install(FILES ${CMAKE_CURRENT_BINARY_DIR}/python/__init__.py DESTINATION lib/python/LDMX)
+### Install a Python init file with a function returning full path to analysis library
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/python/__init__.py "# LDMXANA python module" )
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/python/libAnaPath.py
+    "#function returning full path to analysis lib\ndef libAnaPath() :\n    return \"${CMAKE_INSTALL_PREFIX}/lib/libAnalysis.so\"\n" )
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/python/__init__.py DESTINATION lib/python/LDMXANA)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/python/libAnaPath.py DESTINATION lib/python/LDMXANA)
 
 message( STATUS "ldmx-analysis will be installed to: ${CMAKE_INSTALL_PREFIX}" )
