@@ -25,7 +25,7 @@ namespace ldmx {
         ntuple_->addVar<float>  ("HCalVeto", "max_pe_time"); 
     }
 
-    void HCalVetoAnalyzer::configure(const ParameterSet &pSet) {
+    void HCalVetoAnalyzer::configure(Parameters& parameters) {
     }
 
 
