@@ -1,11 +1,12 @@
 
-#ifndef _ECAL_VETO_ANALYZER_H_
-#define _ECAL_VETO_ANALYZER_H_
+#ifndef ECAL_VETO_ANALYZER_H
+#define ECAL_VETO_ANALYZER_H
 
 /*~~~~~~~~~~~~~~*/
 /*   Framework  */
 /*~~~~~~~~~~~~~~*/
-#include "Framework/EventProcessor.h" 
+#include "Framework/EventProcessor.h"
+#include "Framework/Parameters.h"
 
 namespace ldmx { 
 
@@ -41,9 +42,9 @@ namespace ldmx {
             /** 
              * Configure the processor using the given user specified parameters.
              * 
-             * @param pSet Set of parameters used to configure this processor.
+             * @param parameters Set of parameters used to configure this processor.
              */
-            void configure(const ParameterSet &pSet) final override;
+            void configure(Parameters& parameters) final override;
 
             /**
              * Process the event and create an ntuple for analysis. 
@@ -64,4 +65,4 @@ namespace ldmx {
 
 } // ldmx
 
-#endif // _ECAL_VETO_ANALYZER_H_
+#endif // ECAL_VETO_ANALYZER_H

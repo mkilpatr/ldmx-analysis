@@ -25,10 +25,10 @@ namespace ldmx {
         ntuple_->addVar<float>("ECalVeto", "bdt_pred"); 
     }
 
-    void ECalVetoAnalyzer::configure(const ParameterSet &pSet) {
+    void ECalVetoAnalyzer::configure(Parameters& parameters) {
         
         // Set the name of the ECal veto collection to use
-        ecalVetoCollectionName_ = pSet.getString("ecal_veto_collection"); 
+        ecalVetoCollectionName_ = parameters.getParameter< std::string>("ecal_veto_collection"); 
     }
 
 
