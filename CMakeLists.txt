@@ -27,6 +27,14 @@ find_package(ROOT REQUIRED COMPONENTS Core RIO PyROOT)
 include(${ROOT_USE_FILE})
 message( STATUS "ROOT found at: ${ROOT_DIR}" )
 
+# find boost headers
+# specify location with -DBOOST_ROOT=<location-of-boost-prefix>
+find_package(Boost REQUIRED)
+message(STATUS "Boost lib found at: ${Boost_LIBRARY_DIRS}")
+if(Boost_FOUND)
+  include_directories(${Boost_INCLUDE_DIRS})
+endif()
+
 ## Install configuration scripts - switching out cmake parameters
 #   NOT IMPLEMENTED
 #file(GLOB config_scripts ${CMAKE_CURRENT_SOURCE_DIR}/config/*)
