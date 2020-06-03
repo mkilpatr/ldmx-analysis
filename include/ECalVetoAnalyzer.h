@@ -7,6 +7,8 @@
 /*~~~~~~~~~~~~~~*/
 #include "Framework/EventProcessor.h"
 #include "Framework/Parameters.h"
+#include "DetDescr/EcalDetectorID.h"
+#include "DetDescr/EcalHexReadout.h"
 
 namespace ldmx { 
 
@@ -15,7 +17,7 @@ namespace ldmx {
 
     /**
      * @class ECalVetoAnalyzer 
-     * @brief Analyzer used to create an ntuple out of ECal BDT features.
+     * @brief Analyzer used to create an ntuple out of ECal BDT features and other variables needed for ECal performance studies.
      */
     class ECalVetoAnalyzer : public Analyzer { 
    
@@ -55,11 +57,27 @@ namespace ldmx {
 
         private: 
 
-            /// Default name of the ECal veto collection
+            /// Default names of the collections
+            std::string trigResultCollectionName_{"Trigger"}; 
+            std::string trackerVetoCollectionName_{"TrackerVeto"}; 
+            std::string hcalVetoCollectionName_{"HcalVeto"}; 
             std::string ecalVetoCollectionName_{"EcalVeto"}; 
-        
+            std::string ecalSimHitCollectionName_{"EcalSimHits"}; 
+            std::string ecalRecHitCollectionName_{"EcalRecHits"}; 
+
+            /// Extra tree holding info for the individual hits
+            TTree* hitTree_{nullptr};
+            std::vector<float> hitXv, hitYv, hitZv, hitLayerv, recHitEnergyv, recHitAmplitudev, simHitEnergyv;
+            int trigPass;
+
             /// Instance of NtupleManager
             NtupleManager* ntuple_{nullptr}; 
+
+            // Helper Instance of EcalDetectorID
+            EcalDetectorID detID_;
+
+            // Helper Instance of EcalHexReadout:
+            std::unique_ptr<EcalHexReadout> ecalHexReadout_;
 
     }; // ECalVetoAnalyzer
 
