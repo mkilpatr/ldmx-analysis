@@ -8,7 +8,9 @@ While you may wish to make direct changes to `ldmx-sw`, this will allow you to r
 This analysis package can only be used with a built and installed version of `ldmx-sw`.
 If you haven't built and installed `ldmx-sw` yet, please [do so](https://github.com/LDMX-Software/ldmx-sw).
 
-Here are the steps to configuring and building this stand-alone library:
+Here are the steps to configuring and building this stand-alone library.
+
+> If you are using the docker container (i.e. you ran `source ldmx-sw/scripts/ldmx-env.sh`), then you should prefix all of the below commands with `ldmx` (e.g. `make install` would instead be `ldmx make install`). Since you built ldmx-sw inside of the container, you need to build ldmx-analysis inside the container.
 
 1. Make and Enter a build directory: `mkdir build; cd build`
 2. Run the following cmake command. This command tells this build where ldmx-sw is using the environment variables defined by the setup script. You need to type in the path to your ldmx-sw installation.
