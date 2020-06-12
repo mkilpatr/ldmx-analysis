@@ -18,7 +18,7 @@ Here are the steps to configuring and building this stand-alone library.
 cmake -DCMAKE_INSTALL_PREFIX=../install/ -DLDMX_INSTALL_PREFIX=<path-to-ldmx-sw-install> ../
 ```
 This repository assumes that you require ROOT as well, so you may need to tell cmake where ROOT is using `-DROOT_DIR=<path-to-root-install>`.
-If you are using the docker container, the path to the ldmx-sw install can be written as `$LDMX_BASE/ldmx-sw/install`.
+If you are using the docker container, the defaults for both of these variables are already coded into the container and `CMakeLists.txt`, so you can just run `ldmx cmake ..` in your build directory.
 
 3. Build and install: `make install`
 
