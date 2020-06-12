@@ -3,7 +3,7 @@
 This repo is a helpful "kickstart" repo that you can fork on github.
 While you may wish to make direct changes to `ldmx-sw`, this will allow you to run many processors without have to re-compile `ldmx-sw` every time you wish to re-compile your own processors. This will speed up compilation time and therefore help you be more efficient!
 
-### Building and Installing
+## Building and Installing
 
 This analysis package can only be used with a built and installed version of `ldmx-sw`.
 If you haven't built and installed `ldmx-sw` yet, please [do so](https://github.com/LDMX-Software/ldmx-sw).
@@ -18,26 +18,40 @@ Here are the steps to configuring and building this stand-alone library.
 cmake -DCMAKE_INSTALL_PREFIX=../install/ -DLDMX_INSTALL_PREFIX=<path-to-ldmx-sw-install> ../
 ```
 This repository assumes that you require ROOT as well, so you may need to tell cmake where ROOT is using `-DROOT_DIR=<path-to-root-install>`.
+If you are using the docker container, the path to the ldmx-sw install can be written as `$LDMX_BASE/ldmx-sw/install`.
 
 3. Build and install: `make install`
 
-### Running Processors
+## Running Processors
 
-Any processors in this repository can be run with `ldmx-app` as long as you tell `ldmx-app` where to find these processors.
-This can be achieved by adding the following line to your python configuration script:
+There are three different methods for running the processors inside of this repo with the ldmx-sw application. All of them basically are used to tell ldmx-sw where to find the details it needs to know about these processors. 
+They are listed in order of preference.
+
+Below `p` refers to a previously defined `Process` object in your python configuration.
+
+#### 1. Like any other processor
+In the docker container the `LD_LIBRARY_PATH` environment variable is set to include the path to the ldmx-analysis library installation location, so all you need in your python configuration is
 ```python
-p.libraries.append( "<path-to-this-repo-install>/lib/libAnalysis.so" )
+p.libraries.append( 'libAnalysis.so' )
 ```
-where `p` is a previously defined `Process` object. With this line, you can use any processors written and compiled here as if they are processors inside of `ldmx-sw`.
-
-Alternatively, if you add `<path-to-this-repo-install>/lib/python` to your PYTHONPATH environment variable, you will be able to use the predefined function `libAnaPath()` to return the full path to the analysis library.
-
-In your environment setup script or `.bashrc`:
+which is exactly how you specify other processors in other modules of ldmx-sw. You can replicate this behavior outside of the docker container by adding the path to the ldmx-analysis library to your own `LD_LIBRARY_PATH`:
 ```bash
-export PYTHONPATH=<path-to-this-repo-install>/lib/python:$PYTHONPATH
+export LD_LIBRARY_PATH=<path-to-this-repo-install>/lib:$LD_LIBRARY_PATH
 ```
-And in your python configuration file:
+
+#### 2. With some python + cmake magic
+In the docker container, the `PYTHONPATH` environment variable is set to include the path to the ldmx-analysis python module installation, so you can access the full path to this library with a python function in your python config file.
 ```python
 import LDMXANA.libAnaPath as LA
 p.libraries.append( LA.libAnaPath() )
+```
+You can replicate this behavior without the docker container if you add the path to the install to your `PYTHONPATH`.
+```bash
+export PYTHONPATH=<path-to-this-repo-install>/lib/python:$PYTHONPATH
+```
+
+#### 3. Hardcoding the full path
+This is the most brute force way of making ldmx-sw find your library. It is discouraged because then it is difficult to share your python configuration scripts with people on different computers.
+```python
+p.libraries.append( "<path-to-this-repo-install>/lib/libAnalysis.so" )
 ```
