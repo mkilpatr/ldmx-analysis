@@ -9,16 +9,26 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+#this piece of cmake nonsense allows us to change the default
+#   installation location
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set(CMAKE_INSTALL_PREFIX $ENV{LDMX_BASE}/ldmx-analysis/install CACHE PATH "..." FORCE)
+endif()
+
 # Setup the LDMX INSTALL location
 if(LDMX_INSTALL_PREFIX)
     message( STATUS "ldmx-sw passed as parameter: ${LDMX_INSTALL_PREFIX}" )
 else()
-    message( FATAL_ERROR "LDMXSW install not found. Give the path as '-DLDMX_INSTALL_PREFIX=<path-to-ldmx-sw-install>'" )
+    set(LDMX_INSTALL_PREFIX $ENV{LDMX_BASE}/ldmx-sw/install )
 endif()
 
 # Include LDMXSW stuff
 set(LDMXSW_INCLUDE_DIR "${LDMX_INSTALL_PREFIX}/include")
-include_directories(${LDMXSW_INCLUDE_DIR})
+if(EXISTS ${LDMXSW_INCLUDE_DIR})
+    include_directories(${LDMXSW_INCLUDE_DIR})
+else()
+    message( FATAL_ERROR "LDMXSW install not found. Give the path as '-DLDMX_INSTALL_PREFIX=<path-to-ldmx-sw-install>'" )
+endif()
 file(GLOB LDMX_LIBS ${LDMX_INSTALL_PREFIX}/lib/*.so)
 message( STATUS "ldmx-sw found at ${LDMX_INSTALL_PREFIX}" )
 
