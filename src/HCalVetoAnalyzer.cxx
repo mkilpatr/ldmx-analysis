@@ -18,11 +18,10 @@ namespace ldmx {
     void HCalVetoAnalyzer::onProcessStart() {
         process_.openHistoFile();
 
-        ntuple_ = NtupleManager::getInstance(); 
-        ntuple_->create("HCalVeto"); 
+        ntuple_.create("HCalVeto"); 
 
-        ntuple_->addVar<float> ("HCalVeto", "max_pe"); 
-        ntuple_->addVar<float>  ("HCalVeto", "max_pe_time"); 
+        ntuple_.addVar<float> ("HCalVeto", "max_pe"); 
+        ntuple_.addVar<float>  ("HCalVeto", "max_pe_time"); 
     }
 
     void HCalVetoAnalyzer::configure(Parameters& parameters) {
@@ -47,8 +46,8 @@ namespace ldmx {
         auto maxPEHit{veto.getMaxPEHit()};
         
         // Fill the HCal veto variables
-        ntuple_->setVar<float>("max_pe",      maxPEHit.getPE());  
-        ntuple_->setVar<float>("max_pe_time", maxPEHit.getTime());  
+        ntuple_.setVar<float>("max_pe",      maxPEHit.getPE());  
+        ntuple_.setVar<float>("max_pe_time", maxPEHit.getTime());  
 
     }
 

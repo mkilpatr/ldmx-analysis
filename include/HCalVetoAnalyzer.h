@@ -52,11 +52,6 @@ namespace ldmx {
              */ 
             virtual void analyze(const Event& event) final override; 
 
-        private: 
-
-            /// Instance of NtupleManager
-            NtupleManager* ntuple_{nullptr}; 
-
     }; // HCalVetoAnalyzer
 
 } // ldmx

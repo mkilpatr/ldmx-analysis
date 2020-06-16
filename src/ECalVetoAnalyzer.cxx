@@ -23,57 +23,56 @@ namespace ldmx {
     void ECalVetoAnalyzer::onProcessStart() {
         process_.openHistoFile();
 
-        ntuple_ = NtupleManager::getInstance(); 
-        ntuple_->create("EcalVeto"); 
+        ntuple_.create("EcalVeto"); 
 
-        ntuple_->addVar<int>("EcalVeto", "trigPass");  
-        ntuple_->addVar<float>("EcalVeto", "hcalMaxPE");
-        ntuple_->addVar<int>("EcalVeto", "passHcalVeto");
-        ntuple_->addVar<int>("EcalVeto", "passTrackerVeto");
-        ntuple_->addVar<int>("EcalVeto", "nReadoutHits");  
-        ntuple_->addVar<float>("EcalVeto", "summedDet");
-        ntuple_->addVar<float>("EcalVeto", "summedTightIso");
-        ntuple_->addVar<float>("EcalVeto", "maxCellDep");
-        ntuple_->addVar<float>("EcalVeto", "showerRMS");
-        ntuple_->addVar<float>("EcalVeto", "xStd");
-        ntuple_->addVar<float>("EcalVeto", "yStd");
-        ntuple_->addVar<float>("EcalVeto", "avgLayerHit");
-        ntuple_->addVar<float>("EcalVeto", "stdLayerHit");
-        ntuple_->addVar<int>("EcalVeto", "deepestLayerHit");
-        ntuple_->addVar<float>("EcalVeto", "ecalBackEnergy");
-        ntuple_->addVar<float>("EcalVeto", "discValue"); 
-        ntuple_->addVar<int>("EcalVeto", "nNoiseHits");  
-        ntuple_->addVar<float>("EcalVeto", "noiseEnergy");  
-        ntuple_->addVar<float>("EcalVeto", "electronContainmentEnergy_x1");  
-        ntuple_->addVar<float>("EcalVeto", "electronContainmentEnergy_x2");  
-        ntuple_->addVar<float>("EcalVeto", "electronContainmentEnergy_x3");  
-        ntuple_->addVar<float>("EcalVeto", "electronContainmentEnergy_x4");  
-        ntuple_->addVar<float>("EcalVeto", "electronContainmentEnergy_x5");  
-        ntuple_->addVar<float>("EcalVeto", "photonContainmentEnergy_x1");  
-        ntuple_->addVar<float>("EcalVeto", "photonContainmentEnergy_x2");  
-        ntuple_->addVar<float>("EcalVeto", "photonContainmentEnergy_x3");  
-        ntuple_->addVar<float>("EcalVeto", "photonContainmentEnergy_x4");  
-        ntuple_->addVar<float>("EcalVeto", "photonContainmentEnergy_x5");  
-        ntuple_->addVar<float>("EcalVeto", "outsideContainmentEnergy_x1");  
-        ntuple_->addVar<float>("EcalVeto", "outsideContainmentEnergy_x2");  
-        ntuple_->addVar<float>("EcalVeto", "outsideContainmentEnergy_x3");  
-        ntuple_->addVar<float>("EcalVeto", "outsideContainmentEnergy_x4");  
-        ntuple_->addVar<float>("EcalVeto", "outsideContainmentEnergy_x5");  
-        ntuple_->addVar<int>("EcalVeto", "outsideContainmentNHits_x1");  
-        ntuple_->addVar<int>("EcalVeto", "outsideContainmentNHits_x2");  
-        ntuple_->addVar<int>("EcalVeto", "outsideContainmentNHits_x3");  
-        ntuple_->addVar<int>("EcalVeto", "outsideContainmentNHits_x4");  
-        ntuple_->addVar<int>("EcalVeto", "outsideContainmentNHits_x5");  
-        ntuple_->addVar<float>("EcalVeto", "outsideContainmentXStd_x1");  
-        ntuple_->addVar<float>("EcalVeto", "outsideContainmentXStd_x2");  
-        ntuple_->addVar<float>("EcalVeto", "outsideContainmentXStd_x3");  
-        ntuple_->addVar<float>("EcalVeto", "outsideContainmentXStd_x4");  
-        ntuple_->addVar<float>("EcalVeto", "outsideContainmentXStd_x5");  
-        ntuple_->addVar<float>("EcalVeto", "outsideContainmentYStd_x1");  
-        ntuple_->addVar<float>("EcalVeto", "outsideContainmentYStd_x2");  
-        ntuple_->addVar<float>("EcalVeto", "outsideContainmentYStd_x3");  
-        ntuple_->addVar<float>("EcalVeto", "outsideContainmentYStd_x4");  
-        ntuple_->addVar<float>("EcalVeto", "outsideContainmentYStd_x5");  
+        ntuple_.addVar<int>("EcalVeto", "trigPass");  
+        ntuple_.addVar<float>("EcalVeto", "hcalMaxPE");
+        ntuple_.addVar<int>("EcalVeto", "passHcalVeto");
+        ntuple_.addVar<int>("EcalVeto", "passTrackerVeto");
+        ntuple_.addVar<int>("EcalVeto", "nReadoutHits");  
+        ntuple_.addVar<float>("EcalVeto", "summedDet");
+        ntuple_.addVar<float>("EcalVeto", "summedTightIso");
+        ntuple_.addVar<float>("EcalVeto", "maxCellDep");
+        ntuple_.addVar<float>("EcalVeto", "showerRMS");
+        ntuple_.addVar<float>("EcalVeto", "xStd");
+        ntuple_.addVar<float>("EcalVeto", "yStd");
+        ntuple_.addVar<float>("EcalVeto", "avgLayerHit");
+        ntuple_.addVar<float>("EcalVeto", "stdLayerHit");
+        ntuple_.addVar<int>("EcalVeto", "deepestLayerHit");
+        ntuple_.addVar<float>("EcalVeto", "ecalBackEnergy");
+        ntuple_.addVar<float>("EcalVeto", "discValue"); 
+        ntuple_.addVar<int>("EcalVeto", "nNoiseHits");  
+        ntuple_.addVar<float>("EcalVeto", "noiseEnergy");  
+        ntuple_.addVar<float>("EcalVeto", "electronContainmentEnergy_x1");  
+        ntuple_.addVar<float>("EcalVeto", "electronContainmentEnergy_x2");  
+        ntuple_.addVar<float>("EcalVeto", "electronContainmentEnergy_x3");  
+        ntuple_.addVar<float>("EcalVeto", "electronContainmentEnergy_x4");  
+        ntuple_.addVar<float>("EcalVeto", "electronContainmentEnergy_x5");  
+        ntuple_.addVar<float>("EcalVeto", "photonContainmentEnergy_x1");  
+        ntuple_.addVar<float>("EcalVeto", "photonContainmentEnergy_x2");  
+        ntuple_.addVar<float>("EcalVeto", "photonContainmentEnergy_x3");  
+        ntuple_.addVar<float>("EcalVeto", "photonContainmentEnergy_x4");  
+        ntuple_.addVar<float>("EcalVeto", "photonContainmentEnergy_x5");  
+        ntuple_.addVar<float>("EcalVeto", "outsideContainmentEnergy_x1");  
+        ntuple_.addVar<float>("EcalVeto", "outsideContainmentEnergy_x2");  
+        ntuple_.addVar<float>("EcalVeto", "outsideContainmentEnergy_x3");  
+        ntuple_.addVar<float>("EcalVeto", "outsideContainmentEnergy_x4");  
+        ntuple_.addVar<float>("EcalVeto", "outsideContainmentEnergy_x5");  
+        ntuple_.addVar<int>("EcalVeto", "outsideContainmentNHits_x1");  
+        ntuple_.addVar<int>("EcalVeto", "outsideContainmentNHits_x2");  
+        ntuple_.addVar<int>("EcalVeto", "outsideContainmentNHits_x3");  
+        ntuple_.addVar<int>("EcalVeto", "outsideContainmentNHits_x4");  
+        ntuple_.addVar<int>("EcalVeto", "outsideContainmentNHits_x5");  
+        ntuple_.addVar<float>("EcalVeto", "outsideContainmentXStd_x1");  
+        ntuple_.addVar<float>("EcalVeto", "outsideContainmentXStd_x2");  
+        ntuple_.addVar<float>("EcalVeto", "outsideContainmentXStd_x3");  
+        ntuple_.addVar<float>("EcalVeto", "outsideContainmentXStd_x4");  
+        ntuple_.addVar<float>("EcalVeto", "outsideContainmentXStd_x5");  
+        ntuple_.addVar<float>("EcalVeto", "outsideContainmentYStd_x1");  
+        ntuple_.addVar<float>("EcalVeto", "outsideContainmentYStd_x2");  
+        ntuple_.addVar<float>("EcalVeto", "outsideContainmentYStd_x3");  
+        ntuple_.addVar<float>("EcalVeto", "outsideContainmentYStd_x4");  
+        ntuple_.addVar<float>("EcalVeto", "outsideContainmentYStd_x5");  
 
         hitTree_ = new TTree("EcalHits","EcalHits");
         hitTree_->Branch("hitX",&hitXv);
@@ -146,7 +145,6 @@ namespace ldmx {
                 );
     }
 
-
     void ECalVetoAnalyzer::analyze(const Event& event) {
 
         hitXv.clear();
@@ -172,52 +170,52 @@ namespace ldmx {
         trigPass = trigResult.passed();
         
         // Set variables
-        ntuple_->setVar<int>("trigPass", trigPass);  
-        ntuple_->setVar<float>("hcalMaxPE", hcalVeto.getMaxPEHit().getPE());
-        ntuple_->setVar<int>("passHcalVeto", hcalVeto.passesVeto());
-        ntuple_->setVar<int>("passTrackerVeto", trackerVeto.passesVeto());
-        ntuple_->setVar<int>("nReadoutHits", ecalVeto.getNReadoutHits());  
-        ntuple_->setVar<float>("summedDet", ecalVeto.getSummedDet());
-        ntuple_->setVar<float>("summedTightIso", ecalVeto.getSummedTightIso());
-        ntuple_->setVar<float>("maxCellDep", ecalVeto.getMaxCellDep());
-        ntuple_->setVar<float>("showerRMS", ecalVeto.getShowerRMS());
-        ntuple_->setVar<float>("xStd", ecalVeto.getXStd());
-        ntuple_->setVar<float>("yStd", ecalVeto.getYStd());
-        ntuple_->setVar<float>("avgLayerHit", ecalVeto.getAvgLayerHit());
-        ntuple_->setVar<float>("stdLayerHit", ecalVeto.getStdLayerHit());
-        ntuple_->setVar<int>("deepestLayerHit", ecalVeto.getDeepestLayerHit());
-        ntuple_->setVar<float>("ecalBackEnergy", ecalVeto.getEcalBackEnergy());
-        ntuple_->setVar<float>("discValue", ecalVeto.getDisc());  
-        ntuple_->setVar<float>("electronContainmentEnergy_x1", ecalVeto.getElectronContainmentEnergy()[0]);  
-        ntuple_->setVar<float>("electronContainmentEnergy_x2", ecalVeto.getElectronContainmentEnergy()[1]);  
-        ntuple_->setVar<float>("electronContainmentEnergy_x3", ecalVeto.getElectronContainmentEnergy()[2]);  
-        ntuple_->setVar<float>("electronContainmentEnergy_x4", ecalVeto.getElectronContainmentEnergy()[3]);  
-        ntuple_->setVar<float>("electronContainmentEnergy_x5", ecalVeto.getElectronContainmentEnergy()[4]);  
-        ntuple_->setVar<float>("photonContainmentEnergy_x1", ecalVeto.getPhotonContainmentEnergy()[0]);  
-        ntuple_->setVar<float>("photonContainmentEnergy_x2", ecalVeto.getPhotonContainmentEnergy()[1]);  
-        ntuple_->setVar<float>("photonContainmentEnergy_x3", ecalVeto.getPhotonContainmentEnergy()[2]);  
-        ntuple_->setVar<float>("photonContainmentEnergy_x4", ecalVeto.getPhotonContainmentEnergy()[3]);  
-        ntuple_->setVar<float>("photonContainmentEnergy_x5", ecalVeto.getPhotonContainmentEnergy()[4]);  
-        ntuple_->setVar<float>("outsideContainmentEnergy_x1", ecalVeto.getOutsideContainmentEnergy()[0]);  
-        ntuple_->setVar<float>("outsideContainmentEnergy_x2", ecalVeto.getOutsideContainmentEnergy()[1]);  
-        ntuple_->setVar<float>("outsideContainmentEnergy_x3", ecalVeto.getOutsideContainmentEnergy()[2]);  
-        ntuple_->setVar<float>("outsideContainmentEnergy_x4", ecalVeto.getOutsideContainmentEnergy()[3]);  
-        ntuple_->setVar<float>("outsideContainmentEnergy_x5", ecalVeto.getOutsideContainmentEnergy()[4]);  
-        ntuple_->setVar<int>("outsideContainmentNHits_x1", ecalVeto.getOutsideContainmentNHits()[0]);  
-        ntuple_->setVar<int>("outsideContainmentNHits_x2", ecalVeto.getOutsideContainmentNHits()[1]);  
-        ntuple_->setVar<int>("outsideContainmentNHits_x3", ecalVeto.getOutsideContainmentNHits()[2]);  
-        ntuple_->setVar<int>("outsideContainmentNHits_x4", ecalVeto.getOutsideContainmentNHits()[3]);  
-        ntuple_->setVar<int>("outsideContainmentNHits_x5", ecalVeto.getOutsideContainmentNHits()[4]);  
-        ntuple_->setVar<float>("outsideContainmentXStd_x1", ecalVeto.getOutsideContainmentXStd()[0]);  
-        ntuple_->setVar<float>("outsideContainmentXStd_x2", ecalVeto.getOutsideContainmentXStd()[1]);  
-        ntuple_->setVar<float>("outsideContainmentXStd_x3", ecalVeto.getOutsideContainmentXStd()[2]);  
-        ntuple_->setVar<float>("outsideContainmentXStd_x4", ecalVeto.getOutsideContainmentXStd()[3]);  
-        ntuple_->setVar<float>("outsideContainmentXStd_x5", ecalVeto.getOutsideContainmentXStd()[4]);  
-        ntuple_->setVar<float>("outsideContainmentYStd_x1", ecalVeto.getOutsideContainmentYStd()[0]);  
-        ntuple_->setVar<float>("outsideContainmentYStd_x2", ecalVeto.getOutsideContainmentYStd()[1]);  
-        ntuple_->setVar<float>("outsideContainmentYStd_x3", ecalVeto.getOutsideContainmentYStd()[2]);  
-        ntuple_->setVar<float>("outsideContainmentYStd_x4", ecalVeto.getOutsideContainmentYStd()[3]);  
-        ntuple_->setVar<float>("outsideContainmentYStd_x5", ecalVeto.getOutsideContainmentYStd()[4]);  
+        ntuple_.setVar<int>("trigPass", trigPass);  
+        ntuple_.setVar<float>("hcalMaxPE", hcalVeto.getMaxPEHit().getPE());
+        ntuple_.setVar<int>("passHcalVeto", hcalVeto.passesVeto());
+        ntuple_.setVar<int>("passTrackerVeto", trackerVeto.passesVeto());
+        ntuple_.setVar<int>("nReadoutHits", ecalVeto.getNReadoutHits());  
+        ntuple_.setVar<float>("summedDet", ecalVeto.getSummedDet());
+        ntuple_.setVar<float>("summedTightIso", ecalVeto.getSummedTightIso());
+        ntuple_.setVar<float>("maxCellDep", ecalVeto.getMaxCellDep());
+        ntuple_.setVar<float>("showerRMS", ecalVeto.getShowerRMS());
+        ntuple_.setVar<float>("xStd", ecalVeto.getXStd());
+        ntuple_.setVar<float>("yStd", ecalVeto.getYStd());
+        ntuple_.setVar<float>("avgLayerHit", ecalVeto.getAvgLayerHit());
+        ntuple_.setVar<float>("stdLayerHit", ecalVeto.getStdLayerHit());
+        ntuple_.setVar<int>("deepestLayerHit", ecalVeto.getDeepestLayerHit());
+        ntuple_.setVar<float>("ecalBackEnergy", ecalVeto.getEcalBackEnergy());
+        ntuple_.setVar<float>("discValue", ecalVeto.getDisc());  
+        ntuple_.setVar<float>("electronContainmentEnergy_x1", ecalVeto.getElectronContainmentEnergy()[0]);  
+        ntuple_.setVar<float>("electronContainmentEnergy_x2", ecalVeto.getElectronContainmentEnergy()[1]);  
+        ntuple_.setVar<float>("electronContainmentEnergy_x3", ecalVeto.getElectronContainmentEnergy()[2]);  
+        ntuple_.setVar<float>("electronContainmentEnergy_x4", ecalVeto.getElectronContainmentEnergy()[3]);  
+        ntuple_.setVar<float>("electronContainmentEnergy_x5", ecalVeto.getElectronContainmentEnergy()[4]);  
+        ntuple_.setVar<float>("photonContainmentEnergy_x1", ecalVeto.getPhotonContainmentEnergy()[0]);  
+        ntuple_.setVar<float>("photonContainmentEnergy_x2", ecalVeto.getPhotonContainmentEnergy()[1]);  
+        ntuple_.setVar<float>("photonContainmentEnergy_x3", ecalVeto.getPhotonContainmentEnergy()[2]);  
+        ntuple_.setVar<float>("photonContainmentEnergy_x4", ecalVeto.getPhotonContainmentEnergy()[3]);  
+        ntuple_.setVar<float>("photonContainmentEnergy_x5", ecalVeto.getPhotonContainmentEnergy()[4]);  
+        ntuple_.setVar<float>("outsideContainmentEnergy_x1", ecalVeto.getOutsideContainmentEnergy()[0]);  
+        ntuple_.setVar<float>("outsideContainmentEnergy_x2", ecalVeto.getOutsideContainmentEnergy()[1]);  
+        ntuple_.setVar<float>("outsideContainmentEnergy_x3", ecalVeto.getOutsideContainmentEnergy()[2]);  
+        ntuple_.setVar<float>("outsideContainmentEnergy_x4", ecalVeto.getOutsideContainmentEnergy()[3]);  
+        ntuple_.setVar<float>("outsideContainmentEnergy_x5", ecalVeto.getOutsideContainmentEnergy()[4]);  
+        ntuple_.setVar<int>("outsideContainmentNHits_x1", ecalVeto.getOutsideContainmentNHits()[0]);  
+        ntuple_.setVar<int>("outsideContainmentNHits_x2", ecalVeto.getOutsideContainmentNHits()[1]);  
+        ntuple_.setVar<int>("outsideContainmentNHits_x3", ecalVeto.getOutsideContainmentNHits()[2]);  
+        ntuple_.setVar<int>("outsideContainmentNHits_x4", ecalVeto.getOutsideContainmentNHits()[3]);  
+        ntuple_.setVar<int>("outsideContainmentNHits_x5", ecalVeto.getOutsideContainmentNHits()[4]);  
+        ntuple_.setVar<float>("outsideContainmentXStd_x1", ecalVeto.getOutsideContainmentXStd()[0]);  
+        ntuple_.setVar<float>("outsideContainmentXStd_x2", ecalVeto.getOutsideContainmentXStd()[1]);  
+        ntuple_.setVar<float>("outsideContainmentXStd_x3", ecalVeto.getOutsideContainmentXStd()[2]);  
+        ntuple_.setVar<float>("outsideContainmentXStd_x4", ecalVeto.getOutsideContainmentXStd()[3]);  
+        ntuple_.setVar<float>("outsideContainmentXStd_x5", ecalVeto.getOutsideContainmentXStd()[4]);  
+        ntuple_.setVar<float>("outsideContainmentYStd_x1", ecalVeto.getOutsideContainmentYStd()[0]);  
+        ntuple_.setVar<float>("outsideContainmentYStd_x2", ecalVeto.getOutsideContainmentYStd()[1]);  
+        ntuple_.setVar<float>("outsideContainmentYStd_x3", ecalVeto.getOutsideContainmentYStd()[2]);  
+        ntuple_.setVar<float>("outsideContainmentYStd_x4", ecalVeto.getOutsideContainmentYStd()[3]);  
+        ntuple_.setVar<float>("outsideContainmentYStd_x5", ecalVeto.getOutsideContainmentYStd()[4]);  
 
 
         std::sort( ecalSimHits.begin() , ecalSimHits.end() , 
@@ -264,8 +262,8 @@ namespace ldmx {
            }
         }
 
-        ntuple_->setVar<int>("nNoiseHits", nNoiseHits);  
-        ntuple_->setVar<float>("noiseEnergy", noiseEnergy);  
+        ntuple_.setVar<int>("nNoiseHits", nNoiseHits);  
+        ntuple_.setVar<float>("noiseEnergy", noiseEnergy);  
 
         hitTree_->Fill();
 
