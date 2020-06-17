@@ -70,9 +70,6 @@ namespace ldmx {
             std::vector<float> hitXv, hitYv, hitZv, hitLayerv, recHitEnergyv, recHitAmplitudev, simHitEnergyv;
             int trigPass;
 
-            /// Instance of NtupleManager
-            NtupleManager* ntuple_{nullptr}; 
-
             // Helper Instance of EcalDetectorID
             EcalDetectorID detID_;
 
