@@ -18,7 +18,7 @@ Here are the steps to configuring and building this stand-alone library.
 1. Make and Enter a build directory: `mkdir build; cd build`
 2. Run the following cmake command. This command tells this build where ldmx-sw is using the environment variables defined by the setup script. You need to type in the path to your ldmx-sw installation.
 ```bash
-cmake -DCMAKE_INSTALL_PREFIX=../install/ -DLDMX_INSTALL_PREFIX=<path-to-ldmx-sw-install> ../
+cmake -DLDMX_INSTALL_PREFIX=<path-to-ldmx-sw-install> ../
 ```
 This repository assumes that you require ROOT as well, so you may need to tell cmake where ROOT is using `-DROOT_DIR=<path-to-root-install>`.
 If you are using the docker container, the defaults for all of these variables are already coded into the container and `CMakeLists.txt`, so you can just run `ldmx cmake ..` in your build directory.
@@ -28,9 +28,8 @@ If you are using the docker container, the defaults for all of these variables a
 ## Running Processors in ldmx-analysis
 
 #### Environment Setup
-In the docker container, the `PYTHONPATH` environment variable is set to include the path to the ldmx-analysis python module installation, so you can access the full path to this library with a python function in your python config file.
-
-You can replicate this behavior without the docker container if you add the path to the install to your `PYTHONPATH`.
+This repository is setup to act like another module of ldmx-sw and is installed alongside ldmx-sw.
+If you aren't installing alongside ldmx-sw, you will need to add the separate installation to your `PYTHONPATH`.
 ```bash
 # put these lines in your environment setup script to make this easier (maybe ~/.bash_profile? or ~/.bashrc?)
 export PYTHONPATH=<path-to-this-repo-install>/lib/python:$PYTHONPATH
@@ -41,7 +40,7 @@ A few example scripts are given in the `config` directory.
 The basic idea behind running these is the same as other processors, for example:
 ```python
 #import templates
-from LDMXANA import ecal
+from LDMX.Analysis import ecal
 #create a copy
 myEcalVetoAna = ecal.ECalVetoAnalyzer('myEcalVetoAna')
 #change parameters (if you want to)
