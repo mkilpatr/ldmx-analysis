@@ -6,7 +6,7 @@ p=ldmxcfg.Process('vetoana')
 # Create an instance of the ECal veto analyzer.  This analyzer is used to create
 # an ntuple out of ECal BDT variables. The analyzer requires that the
 # veto collection name be set.   
-from LDMXANA import ecal
+from LDMX.Analysis import ecal
 ecal_veto_ana = ecal.ECalVetoAnalyzer()
 
 # Define the order in which the analyzers will be executed.

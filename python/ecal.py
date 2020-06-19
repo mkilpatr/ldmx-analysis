@@ -24,7 +24,7 @@ class ECalVetoAnalyzer(Analyzer) :
     def __init__(self,name = 'ecalVetoAna') :
         super().__init__(name,'ldmx::ECalVetoAnalyzer')
 
-        from LDMXANA import include
+        from LDMX.Analysis import include
         include.library()
 
         self.trig_result_collection  = 'Trigger'
