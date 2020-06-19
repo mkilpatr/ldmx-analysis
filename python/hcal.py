@@ -11,6 +11,5 @@ class HCalVetoAnalyzer(Analyzer) :
     def __init__(self,name = 'hcalVetoAna') :
         super().__init__(name,'ldmx::HCalVetoAnalyzer')
 
-        from LDMXANA import libAnaPath
-        from LDMX.Framework.ldmxcfg import Process
-        Process.addLibrary( libAnaPath.libAnaPath() )
+        from LDMXANA import include
+        include.library()

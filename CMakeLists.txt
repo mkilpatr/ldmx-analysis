@@ -45,15 +45,6 @@ if(Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS})
 endif()
 
-## Install configuration scripts - switching out cmake parameters
-#   NOT IMPLEMENTED
-#file(GLOB config_scripts ${CMAKE_CURRENT_SOURCE_DIR}/config/*)
-#foreach(config_script ${config_scripts})
-#    get_filename_component(config_script_output ${config_script} NAME)
-#    configure_file(${config_script} ${CMAKE_CURRENT_BINARY_DIR}/${config_script_output})
-#    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${config_script_output} DESTINATION bin PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
-#endforeach()
-
 # Define the headers
 include_directories(include)
 
@@ -61,10 +52,16 @@ include_directories(include)
 add_subdirectory(src)
 
 ### Install a Python init file with a function returning full path to analysis library
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/python/__init__.py "# LDMXANA python module" )
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/python/libAnaPath.py
-    "#function returning full path to analysis lib\ndef libAnaPath() :\n    return \"${CMAKE_INSTALL_PREFIX}/lib/libAnalysis.so\"\n" )
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/python/__init__.py "\"\"\"LDMXANA python module\"\"\"" )
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/python/__init__.py DESTINATION lib/python/LDMXANA)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/python/libAnaPath.py DESTINATION lib/python/LDMXANA)
+
+### Install the rest of the python after configuring them with cmake parameters
+file(GLOB py_scripts ${CMAKE_CURRENT_SOURCE_DIR}/python/*)
+foreach(py_script ${py_scripts})
+    get_filename_component(py_script_output ${py_script} NAME)
+    configure_file(${py_script} ${CMAKE_CURRENT_BINARY_DIR}/${py_script_output})
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${py_script_output} 
+        DESTINATION lib/python/LDMXANA )
+endforeach()
 
 message( STATUS "ldmx-analysis will be installed to: ${CMAKE_INSTALL_PREFIX}" )

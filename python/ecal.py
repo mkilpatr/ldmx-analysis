@@ -24,9 +24,8 @@ class ECalVetoAnalyzer(Analyzer) :
     def __init__(self,name = 'ecalVetoAna') :
         super().__init__(name,'ldmx::ECalVetoAnalyzer')
 
-        from LDMXANA import libAnaPath
-        from LDMX.Framework.ldmxcfg import Process
-        Process.addLibrary( libAnaPath.libAnaPath() )
+        from LDMXANA import include
+        include.library()
 
         self.trig_result_collection  = 'Trigger'
         self.tracker_veto_collection = 'TrackerVeto'
