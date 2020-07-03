@@ -34,3 +34,6 @@
 # Build and Install
 build/*
 install/*
+
+# Python cache
+*__pycache__*
