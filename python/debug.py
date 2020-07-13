@@ -33,3 +33,22 @@ class EventPrinter(Analyzer):
         include.library()
 
         self.verbosity = verbosity
+
+    def process() :
+        """Return a process that just prints each event
+
+        Still need to provide input files!
+
+        Examples
+        --------
+        A python configuration:
+            from LDMX.Analysis import debug
+            p = debug.EventPrinter.process()
+            import sys
+            p.inputFiles = [ sys.argv[1] ]
+        """
+
+        from LDMX.Framework import ldmxcfg
+        p = ldmxcfg.Process('print')
+        p.sequence = [ EventPrinter() ]
+        return p
