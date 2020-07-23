@@ -16,7 +16,7 @@ namespace ldmx {
     }
 
     void HCalVetoAnalyzer::onProcessStart() {
-        process_.openHistoFile();
+        getHistoDirectory();
 
         ntuple_.create("HCalVeto"); 
 

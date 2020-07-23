@@ -21,7 +21,7 @@ namespace ldmx {
     }
 
     void ECalVetoAnalyzer::onProcessStart() {
-        process_.openHistoFile();
+        getHistoDirectory();
 
         ntuple_.create("EcalVeto"); 
 
