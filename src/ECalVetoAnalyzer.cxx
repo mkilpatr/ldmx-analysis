@@ -237,8 +237,6 @@ namespace ldmx {
                 int rawID = recHit.getID();
                 double x, y, z;
                 ecalHexReadout_->getCellAbsolutePosition(rawID, x, y, z);
-                //detID_.setRawValue(rawID);
-                //detID_.unpack();
                 detID_ = EcalID(rawID);
                 int layer = detID_.getLayerID();
                 hitXv.push_back(x);
@@ -248,14 +246,21 @@ namespace ldmx {
                 recHitEnergyv.push_back(recHit.getEnergy());
                 recHitAmplitudev.push_back(recHit.getAmplitude());
                 float totalSimEDep = 0.;
+                int nSimHitMatch = 0;
                 for (auto simHit : ecalSimHits ) {
                     if (simHit.getID() == rawID) {
                         totalSimEDep += simHit.getEdep();
+                        nSimHitMatch++;
                     } else if (simHit.getID() > rawID) {
                         break;
                     }
                 }
                 simHitMatchEnergyv.push_back(totalSimEDep);
+                // if isNoise flag isn't set check for absence of simhit match to identify noise hits
+                if(!recHit.isNoise() && nSimHitMatch == 0) {
+                    nNoiseHits++;
+                    noiseEnergy += recHit.getEnergy();
+                }
             }
         }
 
