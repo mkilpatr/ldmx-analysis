@@ -6,9 +6,6 @@
 #include "Framework/Process.h" 
 #include "Framework/NtupleManager.h"
 #include "Event/EcalVetoResult.h" 
-#include "Event/HcalVetoResult.h" 
-#include "Event/TrackerVetoResult.h" 
-#include "Event/TriggerResult.h" 
 #include "Event/SimCalorimeterHit.h"
 
 using namespace std;
@@ -23,49 +20,38 @@ namespace ldmx {
   }
   
   void ECalMultiElecAnalyzer::onProcessStart() {
-    process_.openHistoFile();
+    getHistoDirectory();
     
-    ntuple_.create("EcalVeto"); 
+    ntuple_.create("EcalSimHits"); 
     
-    ntuple_.addVar<int>("EcalVeto", "trigPass");  
-    ntuple_.addVar<float>("EcalVeto", "hcalMaxPE");
-    ntuple_.addVar<int>("EcalVeto", "passHcalVeto");
-    ntuple_.addVar<int>("EcalVeto", "passTrackerVeto");
-    ntuple_.addVar<int>("EcalVeto", "nReadoutHits");  
-    ntuple_.addVar<float>("EcalVeto", "summedDet");
-    ntuple_.addVar<float>("EcalVeto", "summedTightIso");
-    ntuple_.addVar<float>("EcalVeto", "maxCellDep");
-    ntuple_.addVar<float>("EcalVeto", "showerRMS");
-    ntuple_.addVar<float>("EcalVeto", "xStd");
-    ntuple_.addVar<float>("EcalVeto", "yStd");
-    ntuple_.addVar<float>("EcalVeto", "avgLayerHit");
-    ntuple_.addVar<float>("EcalVeto", "stdLayerHit");
-    ntuple_.addVar<int>("EcalVeto", "deepestLayerHit");
-    ntuple_.addVar<int>("EcalVeto", "nElectrons");
+    //ntuple_.addVar<int>("EcalSimHits", "nReadoutHits");  
+    //ntuple_.addVar<float>("EcalSimHits", "summedDet");
+    //ntuple_.addVar<float>("EcalSimHits", "summedTightIso");
+    //ntuple_.addVar<float>("EcalSimHits", "maxCellDep");
+    //ntuple_.addVar<float>("EcalSimHits", "showerRMS");
+    //ntuple_.addVar<float>("EcalSimHits", "xStd");
+    //ntuple_.addVar<float>("EcalSimHits", "yStd");
+    //ntuple_.addVar<float>("EcalSimHits", "avgLayerHit");
+    //ntuple_.addVar<float>("EcalSimHits", "stdLayerHit");
+    //ntuple_.addVar<int>("EcalSimHits", "deepestLayerHit");
+    ntuple_.addVar<int>("EcalSimHits", "nElectrons");
     
-    hitTree_ = new TTree("EcalHits","EcalHits");
-    hitTree_->Branch("hitX",&hitXv);
-    hitTree_->Branch("hitY",&hitYv);
-    hitTree_->Branch("hitZ",&hitZv);
-    hitTree_->Branch("hitLayer",&hitLayerv);
-    hitTree_->Branch("recHitEnergy",&recHitEnergyv);
-    hitTree_->Branch("recHitAmplitude",&recHitAmplitudev);
-    hitTree_->Branch("simHitEnergy",&simHitEnergyv);
-    hitTree_->Branch("recParTime",&recParTime);
-    hitTree_->Branch("simParTime",&simParTime);
-    hitTree_->Branch("trigPass", &trigPass, "trigPass/I");  
+    //hitTree_ = new TTree("EcalHits","EcalHits");
+    //hitTree_->Branch("hitX",&hitXv);
+    //hitTree_->Branch("hitY",&hitYv);
+    //hitTree_->Branch("hitZ",&hitZv);
+    //hitTree_->Branch("hitLayer",&hitLayerv);
+    //hitTree_->Branch("recHitEnergy",&recHitEnergyv);
+    //hitTree_->Branch("recHitAmplitude",&recHitAmplitudev);
+    //hitTree_->Branch("simHitEnergy",&simHitEnergyv);
+    //hitTree_->Branch("recParTime",&recParTime);
+    //hitTree_->Branch("simParTime",&simParTime);
   }
   
   void ECalMultiElecAnalyzer::configure(Parameters& parameters) {
     
     // Set the name of the ECal veto collection to use
-    trigResultCollectionName_ = parameters.getParameter< std::string>("trig_result_collection"); 
-    trackerVetoCollectionName_ = parameters.getParameter< std::string>("tracker_veto_collection"); 
-    hcalVetoCollectionName_ = parameters.getParameter< std::string>("hcal_veto_collection"); 
-    ecalVetoCollectionName_ = parameters.getParameter< std::string>("ecal_veto_collection"); 
     ecalSimHitCollectionName_ = parameters.getParameter< std::string>("ecal_simhit_collection"); 
-    ecalRecHitCollectionName_ = parameters.getParameter< std::string>("ecal_rechit_collection"); 
-    ecalScorePlaneHitCollectionName_ = parameters.getParameter< std::string>("ecal_scoreplane_collection"); 
     
     double moduleRadius = 85.0; //same as default
     int    numCellsWide = 23; //same as default
@@ -131,107 +117,95 @@ namespace ldmx {
     
     // Check for the ECal veto collection in the event.  If it doesn't 
     // exist, skip creating an ntuple.
-    if (not event.exists(ecalVetoCollectionName_)) return; 
     
     // Get the results/hit collections for this event
-    auto ecalVeto{event.getObject<EcalVetoResult>(ecalVetoCollectionName_)};
-    auto trigResult{event.getObject<TriggerResult>(trigResultCollectionName_)};
-    auto trackerVeto{event.getObject<TrackerVetoResult>(trackerVetoCollectionName_)};
-    auto hcalVeto{event.getObject<HcalVetoResult>(hcalVetoCollectionName_)};
     auto ecalSimHits{event.getCollection<SimCalorimeterHit>(ecalSimHitCollectionName_)};
-    auto ecalRecHits{event.getCollection<EcalHit>(ecalRecHitCollectionName_)};
-    auto ecalScoreHits{event.getCollection<EcalHit>(ecalScorePlaneHitCollectionName_)};
-    
-    trigPass = trigResult.passed();
     
     // Set variables
-    ntuple_.setVar<int>("trigPass", trigPass);  
-    ntuple_.setVar<float>("hcalMaxPE", hcalVeto.getMaxPEHit().getPE());
-    ntuple_.setVar<int>("passHcalVeto", hcalVeto.passesVeto());
-    ntuple_.setVar<int>("passTrackerVeto", trackerVeto.passesVeto());
-    ntuple_.setVar<int>("nReadoutHits", ecalVeto.getNReadoutHits());  
-    ntuple_.setVar<float>("summedDet", ecalVeto.getSummedDet());
-    ntuple_.setVar<float>("summedTightIso", ecalVeto.getSummedTightIso());
-    ntuple_.setVar<float>("maxCellDep", ecalVeto.getMaxCellDep());
-    ntuple_.setVar<float>("showerRMS", ecalVeto.getShowerRMS());
-    ntuple_.setVar<float>("xStd", ecalVeto.getXStd());
-    ntuple_.setVar<float>("yStd", ecalVeto.getYStd());
-    ntuple_.setVar<float>("avgLayerHit", ecalVeto.getAvgLayerHit());
-    ntuple_.setVar<float>("stdLayerHit", ecalVeto.getStdLayerHit());
-    ntuple_.setVar<int>("deepestLayerHit", ecalVeto.getDeepestLayerHit());
+    //ntuple_.setVar<int>("nReadoutHits", ecalRecHits.getNReadoutHits());  
+    //ntuple_.setVar<float>("summedDet", ecalRecHits.getSummedDet());
+    //ntuple_.setVar<float>("summedTightIso", ecalRecHits.getSummedTightIso());
+    //ntuple_.setVar<float>("maxCellDep", ecalRecHits.getMaxCellDep());
+    //ntuple_.setVar<float>("showerRMS", ecalRecHits.getShowerRMS());
+    //ntuple_.setVar<float>("xStd", ecalRecHits.getXStd());
+    //ntuple_.setVar<float>("yStd", ecalRecHits.getYStd());
+    //ntuple_.setVar<float>("avgLayerHit", ecalRecHits.getAvgLayerHit());
+    //ntuple_.setVar<float>("stdLayerHit", ecalRecHits.getStdLayerHit());
+    //ntuple_.setVar<int>("deepestLayerHit", ecalRecHits.getDeepestLayerHit());
     //
-    
+   
     std::sort( ecalSimHits.begin() , ecalSimHits.end() , 
             []( const SimCalorimeterHit &lhs , const SimCalorimeterHit &rhs ) {
                 return lhs.getID() < rhs.getID();
             }
             );
-    
-    std::sort( ecalRecHits.begin() , ecalRecHits.end() , 
-            []( const EcalHit &lhs , const EcalHit &rhs ) {
-                return lhs.getID() < rhs.getID();
-            }
-            );
-    
-    std::sort( ecalScoreHits.begin() , ecalScoreHits.end() , 
-            []( const EcalHit &lhs , const EcalHit &rhs ) {
-                return lhs.getID() < rhs.getID();
-            }
-            );
-    
+   
     int nNoiseHits = 0;
     int nElectrons = 0;
     float noiseEnergy = 0.0;
     
     bool k_flag = false;
-    std::list<int> kIDs = {11}; //PDG IDs for K_L^0, K_S^0, K^0, K^+
-    
-    for(auto simHit: ecalSimHits) { //loop over simHits
-      //printf(simHit);
-      for(int iContrib=0; iContrib <simHit.getNumberOfContribs(); ++iContrib) { //loop over contribs
-        auto contrib = simHit.getContrib(iContrib);
-        if(std::find(kIDs.begin(), kIDs.end(), std::abs(contrib.pdgCode)) != kIDs.end()) {
-          nElectrons++;
-        }
-      } 
-    } 
+    std::list<int> kIDs = {11}; 
+    int numSimHits = 0;
+    double totalSimEDep = 0.;
+    for ( const SimCalorimeterHit &simHit : ecalSimHits ) {
+        simHit.Print();
+        cout << simHit.getNumberOfContribs() << endl;
+        totalSimEDep += simHit.getEdep();
+        cout << simHit.GetSize() << endl;
+        for(int iContrib=0; iContrib <simHit.getNumberOfContribs() - 1; ++iContrib) { //loop over contribs
+          cout << iContrib << endl;
+          
+          auto contrib = simHit.getContrib(iContrib);
+          int absPDG = std::abs(contrib.pdgCode);
+	  cout << absPDG << endl;
+          if(std::find(kIDs.begin(), kIDs.end(), absPDG) != kIDs.end()) {
+            k_flag = true;
+            nElectrons++;
+            //break; //stop loop over contribs
+          }
+        } //close loop over contribs
+        //if (k_flag) break; //stop loop over simHits
+    } //close loop over simHits
+
+    cout << "nElec: " << nElectrons << endl;
     ntuple_.setVar<int>("nElectrons", nElectrons);
  
-    for(auto recHit : ecalRecHits) {
-       if(recHit.isNoise()) {
-          nNoiseHits++;
-          noiseEnergy += recHit.getEnergy();
-       } else {
-          int rawID = recHit.getID();
-          double x, y, z;
-          ecalHexReadout_->getCellAbsolutePosition(rawID, x, y, z);
-          detID_.setRawValue(rawID);
-          detID_.unpack();
-          int layer = detID_.getLayerID();
-          hitXv.push_back(x);
-          hitYv.push_back(y);
-          hitZv.push_back(z);
-          hitLayerv.push_back(layer);
-          recHitEnergyv.push_back(recHit.getEnergy());
-          recHitAmplitudev.push_back(recHit.getAmplitude());
-          float totalSimEDep = 0.;
-          for (auto simHit : ecalSimHits ) {
-             if (simHit.getID() == rawID) {
-                totalSimEDep += simHit.getEdep();
-                recParTime.push_back(recHit.getTime());
-                simParTime.push_back(simHit.getTime());
-             } else if (simHit.getID() > rawID) {
-                break;
-             }
-          }
-          simHitEnergyv.push_back(totalSimEDep);
-       }
-    }
+    //for(auto recHit : ecalRecHits) {
+    //   if(recHit.isNoise()) {
+    //      nNoiseHits++;
+    //      noiseEnergy += recHit.getEnergy();
+    //   } else {
+    //      int rawID = recHit.getID();
+    //      double x, y, z;
+    //      ecalHexReadout_->getCellAbsolutePosition(rawID, x, y, z);
+    //      detID_.setRawValue(rawID);
+    //      detID_.unpack();
+    //      int layer = detID_.getLayerID();
+    //      hitXv.push_back(x);
+    //      hitYv.push_back(y);
+    //      hitZv.push_back(z);
+    //      hitLayerv.push_back(layer);
+    //      recHitEnergyv.push_back(recHit.getEnergy());
+    //      recHitAmplitudev.push_back(recHit.getAmplitude());
+    //      float totalSimEDep = 0.;
+    //      for (auto simHit : ecalSimHits ) {
+    //         if (simHit.getID() == rawID) {
+    //            totalSimEDep += simHit.getEdep();
+    //            recParTime.push_back(recHit.getTime());
+    //            simParTime.push_back(simHit.getTime());
+    //         } else if (simHit.getID() > rawID) {
+    //            break;
+    //         }
+    //      }
+    //      simHitEnergyv.push_back(totalSimEDep);
+    //   }
+    //}
+    //
+    //ntuple_.setVar<int>("nNoiseHits", nNoiseHits);  
+    //ntuple_.setVar<float>("noiseEnergy", noiseEnergy);  
     
-    ntuple_.setVar<int>("nNoiseHits", nNoiseHits);  
-    ntuple_.setVar<float>("noiseEnergy", noiseEnergy);  
-    
-    hitTree_->Fill();
+    //hitTree_->Fill();
   
   }
 

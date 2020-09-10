@@ -59,10 +59,4 @@ class ECalMultiElecAnalyzer(Analyzer) :
         from LDMX.Analysis import include
         include.library()
 
-        self.trig_result_collection  = 'Trigger'
-        self.tracker_veto_collection = 'TrackerVeto'
-        self.hcal_veto_collection    = 'HcalVeto'
-        self.ecal_veto_collection    = 'EcalVeto'
         self.ecal_simhit_collection  = 'EcalSimHits'
-        self.ecal_rechit_collection  = 'EcalRecHits'
-        self.ecal_scoreplane_collection = 'EcalScoringPlaneHits'

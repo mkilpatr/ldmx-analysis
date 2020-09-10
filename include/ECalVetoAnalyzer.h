@@ -64,6 +64,8 @@ namespace ldmx {
             std::string ecalVetoCollectionName_{"EcalVeto"}; 
             std::string ecalSimHitCollectionName_{"EcalSimHits"}; 
             std::string ecalRecHitCollectionName_{"EcalRecHits"}; 
+            //std::string simParticleCollectionName_{"SimParticles"};
+            //std::string targetSimHitCollectionName_{"TargetSimHits"};
 
             /// Extra tree holding info for the individual hits
             TTree* hitTree_{nullptr};

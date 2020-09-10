@@ -7,8 +7,9 @@
 /*~~~~~~~~~~~~~~*/
 #include "Framework/EventProcessor.h"
 #include "Framework/Parameters.h"
-#include "DetDescr/EcalDetectorID.h"
-#include "DetDescr/EcalHexReadout.h"
+#include "DetDescr/include/DetDescr/EcalID.h"
+//#include "DetDescr/EcalDetectorID.h"
+#include "DetDescr/include/DetDescr/EcalHexReadout.h"
 
 namespace ldmx { 
 
@@ -58,13 +59,7 @@ namespace ldmx {
         private: 
 
             /// Default names of the collections
-            std::string trigResultCollectionName_{"Trigger"}; 
-            std::string trackerVetoCollectionName_{"TrackerVeto"}; 
-            std::string hcalVetoCollectionName_{"HcalVeto"}; 
-            std::string ecalVetoCollectionName_{"EcalVeto"}; 
             std::string ecalSimHitCollectionName_{"EcalSimHits"}; 
-            std::string ecalRecHitCollectionName_{"EcalRecHits"}; 
-            std::string ecalScorePlaneHitCollectionName_{"EcalScoringPlaneHits"};
 
             /// Extra tree holding info for the individual hits
             TTree* hitTree_{nullptr};
