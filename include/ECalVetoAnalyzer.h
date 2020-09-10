@@ -7,7 +7,7 @@
 /*~~~~~~~~~~~~~~*/
 #include "Framework/EventProcessor.h"
 #include "Framework/Parameters.h"
-#include "DetDescr/EcalDetectorID.h"
+#include "DetDescr/EcalID.h"
 #include "DetDescr/EcalHexReadout.h"
 
 namespace ldmx { 
@@ -67,11 +67,13 @@ namespace ldmx {
 
             /// Extra tree holding info for the individual hits
             TTree* hitTree_{nullptr};
-            std::vector<float> hitXv, hitYv, hitZv, hitLayerv, recHitEnergyv, recHitAmplitudev, simHitEnergyv;
+            TTree* simHitTree_{nullptr};
+            std::vector<float> hitXv, hitYv, hitZv, hitLayerv, recHitEnergyv, recHitAmplitudev, simHitMatchEnergyv;
+            std::vector<float> simHitXv, simHitYv, simHitZv, simHitLayerv, simHitEnergyv;
             int trigPass;
 
-            // Helper Instance of EcalDetectorID
-            EcalDetectorID detID_;
+            // Helper Instance of EcalID
+            EcalID detID_;
 
             // Helper Instance of EcalHexReadout:
             std::unique_ptr<EcalHexReadout> ecalHexReadout_;
