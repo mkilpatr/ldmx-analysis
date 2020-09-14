@@ -51,56 +51,11 @@ namespace ldmx {
   void ECalMultiElecAnalyzer::configure(Parameters& parameters) {
     
     // Set the name of the ECal veto collection to use
-    ecalSimHitCollectionName_ = parameters.getParameter< std::string>("ecal_simhit_collection"); 
+    ecalSimHitCollectionName_ = parameters.getParameter< std::string>("ecal_simhit_collection");
     
-    double moduleRadius = 85.0; //same as default
-    int    numCellsWide = 23; //same as default
-    double moduleGap = 1.0;
-    double ecalFrontZ = 220;
-    std::vector<double> ecalSensLayersZ = {
-         7.850,
-        13.300,
-        26.400,
-        33.500,
-        47.950,
-        56.550,
-        72.250,
-        81.350,
-        97.050,
-        106.150,
-        121.850,
-        130.950,
-        146.650,
-        155.750,
-        171.450,
-        180.550,
-        196.250,
-        205.350,
-        221.050,
-        230.150,
-        245.850,
-        254.950,
-        270.650,
-        279.750,
-        298.950,
-        311.550,
-        330.750,
-        343.350,
-        362.550,
-        375.150,
-        394.350,
-        406.950,
-        426.150,
-        438.750
-    };
-    
-    ecalHexReadout_ = std::make_unique<EcalHexReadout>(
-            moduleRadius,
-            moduleGap,
-            numCellsWide,
-            ecalSensLayersZ,
-            ecalFrontZ
-            );
+    auto hexReadout{parameters.getParameter<Parameters>("hexReadout")};
+    ecalHexReadout_ = std::make_unique<EcalHexReadout>(hexReadout);  
+  
   }
   
   void ECalMultiElecAnalyzer::analyze(const Event& event) {
@@ -150,15 +105,11 @@ namespace ldmx {
     double totalSimEDep = 0.;
     for ( const SimCalorimeterHit &simHit : ecalSimHits ) {
         simHit.Print();
-        cout << simHit.getNumberOfContribs() << endl;
         totalSimEDep += simHit.getEdep();
-        cout << simHit.GetSize() << endl;
         for(int iContrib=0; iContrib <simHit.getNumberOfContribs() - 1; ++iContrib) { //loop over contribs
-          cout << iContrib << endl;
           
           auto contrib = simHit.getContrib(iContrib);
           int absPDG = std::abs(contrib.pdgCode);
-	  cout << absPDG << endl;
           if(std::find(kIDs.begin(), kIDs.end(), absPDG) != kIDs.end()) {
             k_flag = true;
             nElectrons++;
@@ -168,7 +119,6 @@ namespace ldmx {
         //if (k_flag) break; //stop loop over simHits
     } //close loop over simHits
 
-    cout << "nElec: " << nElectrons << endl;
     ntuple_.setVar<int>("nElectrons", nElectrons);
  
     //for(auto recHit : ecalRecHits) {

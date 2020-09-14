@@ -7,9 +7,8 @@
 /*~~~~~~~~~~~~~~*/
 #include "Framework/EventProcessor.h"
 #include "Framework/Parameters.h"
-#include "DetDescr/include/DetDescr/EcalID.h"
-//#include "DetDescr/EcalDetectorID.h"
-#include "DetDescr/include/DetDescr/EcalHexReadout.h"
+#include "DetDescr/EcalID.h"
+#include "DetDescr/EcalHexReadout.h"
 
 namespace ldmx { 
 
@@ -67,7 +66,7 @@ namespace ldmx {
             int trigPass;
 
             // Helper Instance of EcalDetectorID
-            EcalDetectorID detID_;
+            EcalID detID_;
 
             // Helper Instance of EcalHexReadout:
             std::unique_ptr<EcalHexReadout> ecalHexReadout_;
