@@ -35,17 +35,22 @@ namespace ldmx {
     //ntuple_.addVar<float>("EcalSimHits", "stdLayerHit");
     //ntuple_.addVar<int>("EcalSimHits", "deepestLayerHit");
     ntuple_.addVar<int>("EcalSimHits", "nElectrons");
+    ntuple_.addVar<double>("EcalSimHits", "Electron_energyDep");
     
-    //hitTree_ = new TTree("EcalHits","EcalHits");
+    hitTree_ = new TTree("EcalHits","EcalHits");
     //hitTree_->Branch("hitX",&hitXv);
     //hitTree_->Branch("hitY",&hitYv);
     //hitTree_->Branch("hitZ",&hitZv);
     //hitTree_->Branch("hitLayer",&hitLayerv);
     //hitTree_->Branch("recHitEnergy",&recHitEnergyv);
     //hitTree_->Branch("recHitAmplitude",&recHitAmplitudev);
-    //hitTree_->Branch("simHitEnergy",&simHitEnergyv);
+    hitTree_->Branch("simHitEnergy",&simHitEnergyv);
     //hitTree_->Branch("recParTime",&recParTime);
-    //hitTree_->Branch("simParTime",&simParTime);
+    hitTree_->Branch("simParTime",&simParTime);
+    hitTree_->Branch("simNContib",&simNContib);
+    hitTree_->Branch("elecTime",&elecTime);
+    hitTree_->Branch("elecDiffTime",&elecDiffTime);
+    hitTree_->Branch("elecAbsDiffTime",&elecAbsDiffTime);
   }
   
   void ECalMultiElecAnalyzer::configure(Parameters& parameters) {
@@ -55,7 +60,7 @@ namespace ldmx {
     
     auto hexReadout{parameters.getParameter<Parameters>("hexReadout")};
     ecalHexReadout_ = std::make_unique<EcalHexReadout>(hexReadout);  
-  
+
   }
   
   void ECalMultiElecAnalyzer::analyze(const Event& event) {
@@ -69,13 +74,18 @@ namespace ldmx {
     simHitEnergyv.clear();
     recParTime.clear();
     simParTime.clear();
-    
+    simNContib.clear();
+    elecTime.clear();   
+    elecDiffTime.clear();   
+    elecAbsDiffTime.clear();   
+ 
     // Check for the ECal veto collection in the event.  If it doesn't 
     // exist, skip creating an ntuple.
     
     // Get the results/hit collections for this event
     auto ecalSimHits{event.getCollection<SimCalorimeterHit>(ecalSimHitCollectionName_)};
-    
+    auto particleMap{event.getMap< int, SimParticle >("SimParticles")};
+
     // Set variables
     //ntuple_.setVar<int>("nReadoutHits", ecalRecHits.getNReadoutHits());  
     //ntuple_.setVar<float>("summedDet", ecalRecHits.getSummedDet());
@@ -97,29 +107,59 @@ namespace ldmx {
    
     int nNoiseHits = 0;
     int nElectrons = 0;
+    double elecEnergyDep = 0;
     float noiseEnergy = 0.0;
     
-    bool k_flag = false;
-    std::list<int> kIDs = {11}; 
     int numSimHits = 0;
     double totalSimEDep = 0.;
-    for ( const SimCalorimeterHit &simHit : ecalSimHits ) {
-        simHit.Print();
+
+    //for (const auto &keyVal : particleMap) {
+    //    const SimParticle *simParticle = &(keyVal.second);
+    //    //simParticle->Print();
+    //}
+
+    for ( const auto& simHit : ecalSimHits ) {
+        //simHit.Print();
         totalSimEDep += simHit.getEdep();
-        for(int iContrib=0; iContrib <simHit.getNumberOfContribs() - 1; ++iContrib) { //loop over contribs
-          
-          auto contrib = simHit.getContrib(iContrib);
-          int absPDG = std::abs(contrib.pdgCode);
-          if(std::find(kIDs.begin(), kIDs.end(), absPDG) != kIDs.end()) {
-            k_flag = true;
-            nElectrons++;
-            //break; //stop loop over contribs
-          }
-        } //close loop over contribs
-        //if (k_flag) break; //stop loop over simHits
-    } //close loop over simHits
+        //if(simHit.getNumberOfContribs() < 15) continue;
+        simParTime.push_back(simHit.getTime());
+        simNContib.push_back(simHit.getNumberOfContribs());
+        for( int i = 0 ; i < simHit.getNumberOfContribs() ; i++){
+            if(simHit.getNumberOfContribs() < 1) continue;
+            auto contrib = simHit.getContrib(i);
+            if(debug) std::cout << "contrib " << i << " trackID: " << contrib.trackID << " pdgID: " << contrib.pdgCode << " edep: " << contrib.edep << std::endl;
+            if(debug) std::cout << "\t particle id: " << particleMap[contrib.trackID].getPdgID() << " particle status: " << particleMap[contrib.trackID].getGenStatus() << std::endl;
+            if( TMath::Abs(particleMap[contrib.trackID].getPdgID()) == 11 && particleMap[contrib.trackID].getGenStatus() == 1 ){
+                nElectrons++;
+                elecEnergyDep += contrib.edep;
+                elecTime.push_back(contrib.time);
+            }
+        }
+        simHitEnergyv.push_back(totalSimEDep);
+    }
+
+    for(int iE1 = 0; iE1 != elecTime.size(); iE1++){
+        for(int iE2 = 0; iE2 != elecTime.size(); iE2++){
+            if(iE1 >= iE2) continue;
+            double elecDiff = elecTime[iE2] - elecTime[iE1];
+            elecDiffTime.push_back(elecDiff);
+            elecAbsDiffTime.push_back(TMath::Abs(elecDiff));
+        }
+    }
+
+    //for ( const auto& simHit : ecalSimHits ) {
+    //    simHit.Print();
+    //    totalSimEDep += simHit.getEdep();
+    //    for( int i = 0 ; i < simHit.getNumberOfContribs() ; i++){
+    //        SimCalorimeterHit::Contrib contrib = simHit.getContrib(i);
+    //        if (contrib.pdgCode == kIDs) {
+    //            nElectrons++;
+    //        }
+    //    }
+    //} //close loop over simHits
 
     ntuple_.setVar<int>("nElectrons", nElectrons);
+    ntuple_.setVar<double>("Electron_energyDep", elecEnergyDep);
  
     //for(auto recHit : ecalRecHits) {
     //   if(recHit.isNoise()) {
@@ -155,7 +195,7 @@ namespace ldmx {
     //ntuple_.setVar<int>("nNoiseHits", nNoiseHits);  
     //ntuple_.setVar<float>("noiseEnergy", noiseEnergy);  
     
-    //hitTree_->Fill();
+    hitTree_->Fill();
   
   }
 

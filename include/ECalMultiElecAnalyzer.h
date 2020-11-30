@@ -62,8 +62,9 @@ namespace ldmx {
 
             /// Extra tree holding info for the individual hits
             TTree* hitTree_{nullptr};
-            std::vector<float> hitXv, hitYv, hitZv, hitLayerv, recHitEnergyv, recHitAmplitudev, simHitEnergyv, recParTime, simParTime;
+            std::vector<float> hitXv, hitYv, hitZv, hitLayerv, recHitEnergyv, recHitAmplitudev, simHitEnergyv, recParTime, simParTime, simNContib, elecTime, elecDiffTime, elecAbsDiffTime;
             int trigPass;
+            bool debug = false;
 
             // Helper Instance of EcalDetectorID
             EcalID detID_;
